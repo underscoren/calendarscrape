@@ -1,13 +1,13 @@
-const ics = require("ics");
+const { createEvents } = require("ics");
 
 const scrapeAndDownload = async () => {
 const wait = (millis) => new Promise((res) => setTimeout(res, millis));
 
 const anyWeek = /Week \d+/;
-const aTime = /\(\d+:\d+-\d+:\d+\)/;
-const findTimes = /\(((\d+:\d+)-(\d+:\d+))\)/;
-const findTime = /(\d+):(\d+)/;
-const findTitle = /\(\d+:\d+-\d+:\d+\) (?:- )?(.*)/;
+const aTime = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)/;
+const findTimes = /\(\s*((\d+\s*:\s*\d+)\s*-\s*(\d+\s*:\s*\d+))\s*\)/;
+const findTime = /\s*(\d+\s*:\s*\d+)\s*/;
+const findTitle = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)\s*(?:-\s*)?\s*(.*)/;
 const week1 = new Date("2022-10-31");
 
 // click each tile to force content to load
@@ -147,7 +147,7 @@ function download(data, filename, type) {
 }
 
 // create ics file from events
-ics.createEvents(events, (err, data) => {
+createEvents(events, (err, data) => {
     if(err) {
         console.error(err);
         return;
