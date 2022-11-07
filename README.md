@@ -10,7 +10,7 @@ I wrote this because I was tired of spending like 20 minutes manually inputting 
 
 Get the Tampermonkey extension for your browser.
 
-Download the userscript from this [gist](https://gist.github.com/underscoren/a1e4d0a4807224a840219b6d1cd2e74b/raw/4d391cbc3a2cfb62fcfcc82a94fa6b4617ecff3d/calendarscrape.user.js) (Click the "Raw" button) (This is how you update it as well) or manually create your own userscript from the repo's `dist/bundle.min.js`.
+Download the userscript from this [gist](https://gist.github.com/underscoren/a1e4d0a4807224a840219b6d1cd2e74b) (Click the "Raw" button) (This is how you update it as well) or manually create your own userscript from the repo's `dist/bundle.min.js`.
 
 Once on the Games development course page, scroll down and click the "Download Calendar" button. It will rapidly open all the week tabs to force the content to load, then it will download `calendar.ics`. 
 
