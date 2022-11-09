@@ -1,7 +1,7 @@
 {
   "name": "scrapecalendar",
   "author": "Marius Steffens _n#1111",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": "github:underscoren/calendarscrape",
   "scripts": {
     "build": "rollup --config"

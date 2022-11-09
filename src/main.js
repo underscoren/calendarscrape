@@ -1,4 +1,4 @@
-const { createEvents } = require("ics");
+const ics = require("ics");
 
 const scrapeAndDownload = async () => {
 const wait = (millis) => new Promise((res) => setTimeout(res, millis));
@@ -6,7 +6,7 @@ const wait = (millis) => new Promise((res) => setTimeout(res, millis));
 const anyWeek = /Week \d+/;
 const aTime = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)/;
 const findTimes = /\(\s*((\d+\s*:\s*\d+)\s*-\s*(\d+\s*:\s*\d+))\s*\)/;
-const findTime = /\s*(\d+\s*:\s*\d+)\s*/;
+const findTime = /(\d+\s*):(\s*\d+)/;
 const findTitle = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)\s*(?:-\s*)?\s*(.*)/;
 const week1 = new Date("2022-10-31");
 
@@ -147,7 +147,7 @@ function download(data, filename, type) {
 }
 
 // create ics file from events
-createEvents(events, (err, data) => {
+ics.createEvents(events, (err, data) => {
     if(err) {
         console.error(err);
         return;
