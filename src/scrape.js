@@ -1,26 +1,32 @@
 const ics = require("ics");
 
-const scrapeAndDownload = async () => {
+/**
+ * Scrapes the website, returns array of event
+ * objects to pass to 
+ * @returns calendar file contents
+ */
+const scrapeEvents = async () => {
 const wait = (millis) => new Promise((res) => setTimeout(res, millis));
 
+// unreadable regex
 const anyWeek = /Week \d+/;
-const aTime = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)/;
-const findTimes = /\(\s*((\d+\s*:\s*\d+)\s*-\s*(\d+\s*:\s*\d+))\s*\)/;
-const findTime = /(\d+\s*):(\s*\d+)/;
-const findTitle = /^\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)\s*(?:-\s*)?\s*(.+)$|(.+)\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)$/;
+const findWeek = /Week (\d+)/;
+const aTime = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)/; // finds (HH:MM-HH:MM) with any whitespace (the rest also accept any whitespace)
+const findTimes = /\(\s*((\d+\s*:\s*\d+)\s*-\s*(\d+\s*:\s*\d+))\s*\)/; // finds (HH:MM-HH:MM) and returns the two HH:MM 
+const findTime = /(\d+\s*):(\s*\d+)/; // finds HH:MM and returns HH and MM
+const findTitle = /^\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)\s*(?:-\s*)?\s*(.+)$|(.+)\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)$/; // finds and returns a title, either "(HH:MM-HH:MM) title" or "title (HH:MM-HH:MM)"
 const week1 = new Date("2022-10-31");
 
 // click each tile to force content to load
-const weekTiles = $("li.tile")
+const weekTiles = [...document.querySelectorAll("li.tile")]
     .filter(
-        (i,element) => $(element)
-            .find("h3")
-            .text()
-            .match(anyWeek)
-    )
+        element => element.querySelector("h3")
+            ?.innerText
+            ?.match(anyWeek)
+    );
 
 for (const tile of weekTiles) {
-    $(tile).click();
+    tile.click();
     await wait(250); // give it a little while to load
 }
 
@@ -28,42 +34,60 @@ await wait(500); // pretty sure everything will have loaded by now
 
 console.log("Loaded all week sections (probably)");
 
-const weekSections = $("li.section.main")
+const weekSections = [...document.querySelectorAll("li.section.main")]
     .filter(
-        (i,element) => $(element)
-            .find(".hidden.sectionname")
-            .text()
-            .match(anyWeek)
+        (element) => element
+            .querySelector(".hidden.sectionname")
+            ?.innerText
+            ?.match(anyWeek)
     );
 
-const getLink = element => $(element).find(".activitytitle");
+const getLink = element => element.querySelector(".activitytitle");
 
 const meetings = [];
 
+console.log(weekSections);
+
 // find all the activity links for each week
 for(const section of weekSections) {
-    const week = $(section).find(".hidden.sectionname").text()
+    const week = section.querySelector(".hidden.sectionname")?.innerText;
     
-    const meetingLinks = $(section)
-    .find("li.activity")
-    .filter(
-        (i,element) => getLink(element).text().match(aTime)
-    );
+    console.log(week);
 
-    // map link elements (url + time) to day of week by getting the first previous sibling element
-    const links = [...meetingLinks]
+    const meetingLinks = [...section.querySelectorAll("li.activity")]
+    .filter(
+        element => getLink(element)
+            ?.innerText
+            .match(aTime)
+    );
+    
+    // iterate through siblings up the tree until selector matches or no more siblings exist
+    const getPrevSibling = (element, selector) => {
+        let sibling = element.previousElementSibling;
+        while(sibling) {
+            if(sibling.matches(selector))
+                return sibling;
+            sibling = sibling.previousElementSibling;
+        }
+    };
+    
+    // map link elements (url + time) to day of week
+    const links = meetingLinks
         .map(
             e => ({
                 link: getLink(e),
-                day: $(e).prevAll(".modtype_label").first().find("strong").text()
+                day: getPrevSibling(e, ".modtype_label")
+                    .querySelector("strong")
+                    ?.innerText
             })
         );
     
-    // construct list of meetings from link and date/time data
+    // construct list of meetings from link and week/day/time data
     for (const {link, day} of links) {
-        const [_, __, start, end] = link.text().match(findTimes);
-        const [___, weekNum] = week.match(/Week (\d+)/);
+        const [_, __, start, end] = link.innerText.match(findTimes);
+        const [___, weekNum] = week.match(findWeek);
         
+        // construct an map between day and weekday number (starting from 0)
         const dayNumMap = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
             .reduce((arr,day,i) => {
                 arr[day] = i; 
@@ -74,13 +98,13 @@ for(const section of weekSections) {
         const linkDate = new Date(week1);
         linkDate.setUTCDate(week1.getUTCDate() + weekOffset);
 
-        const titleRegexResults = link.text().match(findTitle);
+        const titleRegexResults = link.innerText.match(findTitle);
         const title = titleRegexResults[1] ?? titleRegexResults[2] ?? "ERROR"; // i hope i never see this error, but i know deep down i will
 
         meetings.push({
             date: linkDate,
             title,
-            url: link.parent().attr("href"),
+            url: link.parentElement.getAttribute("href"),
             start,
             end
         });
@@ -119,15 +143,39 @@ for(const meeting of meetings) {
             description: "Reminder",
             trigger: {
                 minutes: 10,
-                before: true 
+                before: true
             }
         }],
-        created: formatDate(new Date())
+        created: formatDate(startDate),
+        lastModified: formatDate(new Date()) 
     });
 }
 
 console.log(events);
 
+return events;
+}
+
+/**
+ * returns a string with ics file data from scraped events
+ * @param events scraped events 
+ * @returns { string } file contents
+ */
+const createCalendar = events => new Promise((resolve, reject) => {
+    ics.createEvents(events, (err, data) => {
+        if(err)
+            reject(err);
+        else
+            resolve(data);
+    });
+});
+
+module.exports = {
+    scrapeEvents,
+    createCalendar
+}
+
+/*
 // Function to download data to a file (straight from stackoverflow lol)
 function download(data, filename, type) {
     var file = new Blob([data], {type: type});
@@ -147,18 +195,6 @@ function download(data, filename, type) {
     }
 }
 
-// create ics file from events
-ics.createEvents(events, (err, data) => {
-    if(err) {
-        console.error(err);
-        return;
-    }
-
-    download(data, "calendar.ics", "text/plain;charset=utf-8"); 
-});
-
-}
-
 // debug
 //scrapeAndDownload();
 
@@ -172,3 +208,5 @@ button.addEventListener("click", () => {
 });
 
 div.appendChild(button);
+*/
+

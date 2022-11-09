@@ -4,7 +4,7 @@
 
 I wrote this because I was tired of spending like 20 minutes manually inputting calendar events into outlook.
 
-[![wakatime](https://wakatime.com/badge/user/11612492-942b-4434-89a1-5e31d943fa36/project/6128f755-2ddd-4ef4-b1ce-188971ead674.svg?style=for-the-badge)](https://wakatime.com/badge/github/underscoren/calendarscrape)
+[![wakatime](https://wakatime.com/badge/user/11612492-942b-4434-89a1-5e31d943fa36/project/6128f755-2ddd-4ef4-b1ce-188971ead674.svg?style=for-the-badge)](https://wakatime.com/badge/user/11612492-942b-4434-89a1-5e31d943fa36/project/6128f755-2ddd-4ef4-b1ce-188971ead674.svg)
 
 # Usage
 
