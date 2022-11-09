@@ -7,7 +7,7 @@ const anyWeek = /Week \d+/;
 const aTime = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)/;
 const findTimes = /\(\s*((\d+\s*:\s*\d+)\s*-\s*(\d+\s*:\s*\d+))\s*\)/;
 const findTime = /(\d+\s*):(\s*\d+)/;
-const findTitle = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)\s*(?:-\s*)?\s*(.*)/;
+const findTitle = /^\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)\s*(?:-\s*)?\s*(.+)$|(.+)\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)$/;
 const week1 = new Date("2022-10-31");
 
 // click each tile to force content to load
@@ -74,7 +74,8 @@ for(const section of weekSections) {
         const linkDate = new Date(week1);
         linkDate.setUTCDate(week1.getUTCDate() + weekOffset);
 
-        const [____, title] = link.text().match(findTitle);
+        const titleRegexResults = link.text().match(findTitle);
+        const title = titleRegexResults[1] ?? titleRegexResults[2] ?? "ERROR"; // i hope i never see this error, but i know deep down i will
 
         meetings.push({
             date: linkDate,
