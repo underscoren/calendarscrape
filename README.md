@@ -8,7 +8,7 @@ I wrote this because I was tired of spending like 20 minutes manually inputting 
 
 # Usage
 
-## Option 1: Sync calendar from webcal server
+## Option 1: Automatic
 
 I run a server that auto-updates the calendar on the hour. Use this link: (see discord or ask me: _n#1111)
 
@@ -25,11 +25,13 @@ If you're using gmail:
  - From the dropdown, select "From URL"
  - Paste the link, and click "Add Calendar"
 
-Typically, calendars are synced daily.
+Typically, calendars are synced every few hours. From some basic investigation, there does not seem to be a way to manually force the calendar to sync.
 
-With outlook you can manually sync by clicking the sync button at the top of the "Mail" app. I'm not sure how gmail does it.
+If you know how, feel free to let me know.
 
-## Option 2: Manually create ics file
+## Option 2: Manual
+
+### Browser
 
 Get the Tampermonkey extension for your browser.
 
@@ -39,7 +41,33 @@ Once on the Games development course page, scroll down and click the "Download C
 
 Open the file with the Windows 10 Calendar app (or Outlook, Gmail, Thunderbird, whatever you use that supports ICS) and import the calendar.
 
-Eventually I'll automate this and set up a webcal server. Hopefully.
+### Server
+
+Download nodejs / npm
+
+Clone the git repo and install the package globally
+
+```bash
+git clone https://github.com/underscoren/calendarscrape.git
+cd calendarscrape
+npm install --global .
+```
+
+Create a file `src/secrets.json` containing your skills-city portal username and password like so:
+```json
+{
+    "username": "your username",
+    "password": "your password"
+}
+```
+
+Run `calendarscrape` with an output file path generate the calendar file
+
+```bash
+calendarscrape calendar.ics
+```
+
+(In case you're wondering, the webcal:// protocol is just a HTTP GET. You can simply serve the file statically to make your own "webcal server")
 
 # Development
 
@@ -56,4 +84,9 @@ To make a build, simply run the "build" script
 
 ```bash
 yarn run build
+```
+
+To run the scraper browser, optionally set the `DEBUG` environment variable, then
+```bash
+yarn run scrape
 ```
