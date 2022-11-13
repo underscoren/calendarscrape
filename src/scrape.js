@@ -30,7 +30,7 @@ for (const tile of weekTiles) {
     await wait(250); // give it a little while to load
 }
 
-await wait(500); // pretty sure everything will have loaded by now
+await wait(1000); // pretty sure everything will have loaded by now
 
 console.log("Loaded all week sections (probably)");
 
@@ -137,7 +137,8 @@ for(const meeting of meetings) {
         endInputType: "utc",
         endOutputType: "utc",
         title: meeting.title,
-        description: `<a href="${meeting.url}">${meeting.url}</a>`,
+        description: `<a href="${meeting.url}"> ${meeting.url} </a>`,
+        htmlContent: `<a href="${meeting.url}"> ${meeting.url} </a>`,
         alarms: [{
             action: "display",
             description: "Reminder",
@@ -157,9 +158,9 @@ return events;
 }
 
 /**
- * returns a string with ics file data from scraped events
+ * Returns a string with ics file data from scraped events
  * @param events scraped events 
- * @returns { string } file contents
+ * @returns { Promise<string> } file contents
  */
 const createCalendar = events => new Promise((resolve, reject) => {
     ics.createEvents(events, (err, data) => {

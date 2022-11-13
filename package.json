@@ -1,11 +1,14 @@
 {
   "name": "scrapecalendar",
   "author": "Marius Steffens _n#1111",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "repository": "github:underscoren/calendarscrape",
+  "bin": {
+    "scrapecalendar": "cli.js"
+  },
   "scripts": {
     "build": "rollup --config",
-    "scrape": "node src/auto.js"
+    "scrape": "node cli.js"
   },
   "license": "MIT",
   "private": true,

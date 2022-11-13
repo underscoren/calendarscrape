@@ -3,7 +3,7 @@ const nodeResolve = require("@rollup/plugin-node-resolve");
 const { uglify } = require("rollup-plugin-uglify");
 
 module.exports = {
-    input: "src/main.js",
+    input: "src/manual.js",
     output: {
         file: "dist/bundle.min.js",
         format: "iife",

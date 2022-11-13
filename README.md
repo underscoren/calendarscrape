@@ -8,6 +8,29 @@ I wrote this because I was tired of spending like 20 minutes manually inputting 
 
 # Usage
 
+## Option 1: Sync calendar from webcal server
+
+I run a server that auto-updates the calendar on the hour. Use this link: (see discord or ask me: _n#1111)
+
+If you're using outlook:
+ - Log into outlook web
+ - Go to the calendars page (top left, below mail icon)
+ - "Add Calendar" (middle left, below small month calendar)
+ - "Subscribe from web"
+ - Paste the link, give it a name, and click "Import"
+
+If you're using gmail:
+ - Log into calendar.google.com
+ - Click the "+" next to "Other Calendars" (middle left, below "My Calendars")
+ - From the dropdown, select "From URL"
+ - Paste the link, and click "Add Calendar"
+
+Typically, calendars are synced daily.
+
+With outlook you can manually sync by clicking the sync button at the top of the "Mail" app. I'm not sure how gmail does it.
+
+## Option 2: Manually create ics file
+
 Get the Tampermonkey extension for your browser.
 
 Download the userscript from this [gist](https://gist.github.com/underscoren/a1e4d0a4807224a840219b6d1cd2e74b) (Click the "Raw" button) (This is how you update it as well) or manually create your own userscript from the repo's `dist/bundle.min.js`.
