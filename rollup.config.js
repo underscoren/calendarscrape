@@ -1,6 +1,6 @@
 const commonjs = require("@rollup/plugin-commonjs");
 const nodeResolve = require("@rollup/plugin-node-resolve");
-const { uglify } = require("rollup-plugin-uglify");
+const terser = require("@rollup/plugin-terser");
 
 module.exports = {
     input: "src/manual.js",
@@ -15,6 +15,6 @@ module.exports = {
             browser: true
         }),
         commonjs(),
-        uglify()
+        terser()
     ]
 };

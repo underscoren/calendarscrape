@@ -50,6 +50,7 @@ Clone the git repo and install the package globally
 ```bash
 git clone https://github.com/underscoren/calendarscrape.git
 cd calendarscrape
+npm install
 npm install --global .
 ```
 
