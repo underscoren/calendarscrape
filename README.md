@@ -61,10 +61,10 @@ Create a file `src/secrets.json` containing your skills-city portal username and
 }
 ```
 
-Run `calendarscrape` with an output file path generate the calendar file
+Run `scrapecalendar` with an output file path generate the calendar file
 
 ```bash
-calendarscrape calendar.ics
+scrapecalendar calendar.ics
 ```
 
 (In case you're wondering, the webcal:// protocol is just a HTTP GET. You can simply serve the file statically to make your own "webcal server")
