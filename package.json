@@ -1,20 +1,25 @@
 {
   "name": "scrapecalendar",
   "author": "Marius Steffens _n#1111",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "repository": "github:underscoren/calendarscrape",
+  "bin": {
+    "scrapecalendar": "cli.js"
+  },
   "scripts": {
-    "build": "rollup --config"
+    "build": "rollup --config",
+    "scrape": "node cli.js"
   },
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "ics": "^2.41.0"
+    "ics": "^2.41.0",
+    "puppeteer": "^19.2.2"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^23.0.2",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "rollup": "^3.2.5",
-    "rollup-plugin-uglify": "^6.0.4"
+    "@rollup/plugin-terser": "^0.1.0",
+    "rollup": "^3.2.5"
   }
 }

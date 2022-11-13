@@ -1,9 +1,9 @@
 const commonjs = require("@rollup/plugin-commonjs");
 const nodeResolve = require("@rollup/plugin-node-resolve");
-const { uglify } = require("rollup-plugin-uglify");
+const terser = require("@rollup/plugin-terser");
 
 module.exports = {
-    input: "src/main.js",
+    input: "src/manual.js",
     output: {
         file: "dist/bundle.min.js",
         format: "iife",
@@ -15,6 +15,6 @@ module.exports = {
             browser: true
         }),
         commonjs(),
-        uglify()
+        terser()
     ]
 };
