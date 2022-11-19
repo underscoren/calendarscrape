@@ -14,7 +14,7 @@ const findWeek = /Week (\d+)/;
 const aTime = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)/; // finds (HH:MM-HH:MM) with any whitespace (the rest also accept any whitespace)
 const findTimes = /\(\s*((\d+\s*:\s*\d+)\s*-\s*(\d+\s*:\s*\d+))\s*\)/; // finds (HH:MM-HH:MM) and returns the two HH:MM 
 const findTime = /(\d+\s*):(\s*\d+)/; // finds HH:MM and returns HH and MM
-const findTitle = /^\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)\s*(?:-\s*)?\s*(.+)$|(.+)\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)$/; // finds and returns a title, either "(HH:MM-HH:MM) title" or "title (HH:MM-HH:MM)"
+const findTitle = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)\s*(?:-\s*)?\s*(.+)$|(.+)\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)$/; // finds and returns a title, either "(HH:MM-HH:MM) title" or "title (HH:MM-HH:MM)"
 const week1 = new Date("2022-10-31");
 
 // click each tile to force content to load
