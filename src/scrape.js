@@ -77,10 +77,11 @@ for(const section of weekSections) {
             e => ({
                 link: getLink(e),
                 day: getPrevSibling(e, ".modtype_label")
-                    .querySelector("strong")
+                    ?.querySelector("strong")
                     ?.innerText
             })
-        );
+        )
+        .filter(l => l.day); // filter invalid links
     
     // construct list of meetings from link and week/day/time data
     for (const {link, day} of links) {
@@ -93,8 +94,9 @@ for(const section of weekSections) {
                 arr[day] = i; 
                 return arr;
             }, {});
-
-        const weekOffset = (parseInt(weekNum) - 1) * 7 + dayNumMap[day];
+        
+        const dayName = Object.keys(dayNumMap).find(d => day.startsWith(d));
+        const weekOffset = (parseInt(weekNum) - 1) * 7 + dayNumMap[dayName];
         const linkDate = new Date(week1);
         linkDate.setUTCDate(week1.getUTCDate() + weekOffset);
 

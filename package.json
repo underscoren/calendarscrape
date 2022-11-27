@@ -1,7 +1,7 @@
 {
   "name": "scrapecalendar",
   "author": "Marius Steffens _n#1111",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "repository": "github:underscoren/calendarscrape",
   "bin": {
     "scrapecalendar": "cli.js"
