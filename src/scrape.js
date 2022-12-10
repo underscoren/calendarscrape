@@ -11,6 +11,7 @@ const wait = (millis) => new Promise((res) => setTimeout(res, millis));
 // unreadable regex
 const anyWeek = /Week \d+/;
 const findWeek = /Week (\d+)/;
+const findWeekday = /monday|tuesday|wednesday|thursday|friday/i;
 const aTime = /\(\s*\d+\s*:\s*\d+\s*-\s*\d+\s*:\s*\d+\s*\)/; // finds (HH:MM-HH:MM) with any whitespace (the rest also accept any whitespace)
 const findTimes = /\(\s*((\d+\s*:\s*\d+)\s*-\s*(\d+\s*:\s*\d+))\s*\)/; // finds (HH:MM-HH:MM) and returns the two HH:MM 
 const findTime = /(\d+\s*):(\s*\d+)/; // finds HH:MM and returns HH and MM
@@ -77,8 +78,8 @@ for(const section of weekSections) {
             e => ({
                 link: getLink(e),
                 day: getPrevSibling(e, ".modtype_label")
-                    ?.querySelector("strong")
                     ?.innerText
+                    ?.match(findWeekday)?.[0]
             })
         )
         .filter(l => l.day); // filter invalid links
